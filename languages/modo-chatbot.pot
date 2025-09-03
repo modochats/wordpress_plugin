@@ -1,0 +1,105 @@
+# Copyright (C) 2024 Modo Chats
+# This file is distributed under the same license as the Modo Chatbot plugin.
+msgid ""
+msgstr ""
+"Project-Id-Version: Modo Chatbot 1.0.0\n"
+"Report-Msgid-Bugs-To: https://modochats.com\n"
+"POT-Creation-Date: 2024-01-01 00:00+0000\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2024-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+
+#: modo-chatbot-wp-plugin.php:45
+msgid "Modo Chatbot Settings"
+msgstr ""
+
+#: modo-chatbot-wp-plugin.php:46
+msgid "Modo Chatbot"
+msgstr ""
+
+#: modo-chatbot-wp-plugin.php:45
+msgid "Enable Chatbot"
+msgstr ""
+
+#: modo-chatbot-wp-plugin.php:46
+msgid "Enable or disable the chatbot widget on your website."
+msgstr ""
+
+#: modo-chatbot-wp-plugin.php:52
+msgid "Chatbot Key"
+msgstr ""
+
+#: modo-chatbot-wp-plugin.php:53
+msgid "Your unique chatbot identifier from Modo dashboard."
+msgstr ""
+
+#: modo-chatbot-wp-plugin.php:54
+msgid "Test Connection"
+msgstr ""
+
+#: modo-chatbot-wp-plugin.php:60
+msgid "Chatbot Title"
+msgstr ""
+
+#: modo-chatbot-wp-plugin.php:61
+msgid "Title displayed in the chat header."
+msgstr ""
+
+#: modo-chatbot-wp-plugin.php:67
+msgid "Button Position"
+msgstr ""
+
+#: modo-chatbot-wp-plugin.php:68
+msgid "Position of the floating chat button."
+msgstr ""
+
+#: modo-chatbot-wp-plugin.php:69
+msgid "Right"
+msgstr ""
+
+#: modo-chatbot-wp-plugin.php:70
+msgid "Left"
+msgstr ""
+
+#: modo-chatbot-wp-plugin.php:76
+msgid "Theme"
+msgstr ""
+
+#: modo-chatbot-wp-plugin.php:77
+msgid "Color theme for the chat interface."
+msgstr ""
+
+#: modo-chatbot-wp-plugin.php:78
+msgid "Dark"
+msgstr ""
+
+#: modo-chatbot-wp-plugin.php:79
+msgid "Light"
+msgstr ""
+
+#: modo-chatbot-wp-plugin.php:85
+msgid "Button Color"
+msgstr ""
+
+#: modo-chatbot-wp-plugin.php:86
+msgid "Custom color for the floating chat button."
+msgstr ""
+
+#: modo-chatbot-wp-plugin.php:95
+msgid "Preview"
+msgstr ""
+
+#: modo-chatbot-wp-plugin.php:101
+msgid "Need Help?"
+msgstr ""
+
+#: modo-chatbot-wp-plugin.php:102
+msgid "Get your Chatbot Key from your Modo dashboard."
+msgstr ""
+
+#: modo-chatbot-wp-plugin.php:103
+msgid "Visit Modo Dashboard"
+msgstr ""

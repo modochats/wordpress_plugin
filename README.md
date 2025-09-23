@@ -30,6 +30,13 @@ A powerful WordPress plugin that integrates Modo AI chatbot into your website wi
 
 ### Setting Up Your JavaScript File
 
+**Default CDN (Recommended):**
+Use the official Modo CDN for the latest version:
+```
+https://cdn.jsdelivr.net/gh/modochats/webcomponent@latest/cdn-dist/modo-web-component.min.js
+```
+
+**Custom JavaScript File:**
 1. Upload your `modo-widget.js` file to your website or CDN
 2. Get the full URL to the JavaScript file
 3. Enter the URL in the "JavaScript File Path" field
@@ -43,7 +50,7 @@ A powerful WordPress plugin that integrates Modo AI chatbot into your website wi
 - **Chatbot Title**: Custom title displayed in chat header
 - **Button Position**: Left or right side of the screen
 - **Theme**: Light or dark theme for the chat interface
-- **Button Color**: Custom color for the floating chat button
+- **Primary Color**: Custom primary color for the chat interface and floating button
 
 ## Usage
 
@@ -55,13 +62,27 @@ Once configured, the chatbot will automatically appear on all pages of your webs
 - Start new conversations
 - View chat history
 
-## API Integration
+## JavaScript Integration
 
-The plugin integrates with Modo's API endpoints:
+The plugin generates the following JavaScript code to initialize your chatbot:
 
-- `GET /chatbot/public/{unique_id}` - Fetches chatbot configuration
-- `POST /conversations/webchat/send-message` - Sends messages
-- `GET /conversations/webchat/{chatbot_id}/{conversation_id}/history` - Loads chat history
+```javascript
+document.addEventListener("DOMContentLoaded", function() {
+    const chat = new ModoChat("your-chatbot-key", {
+        position: "right",
+        theme: "dark",
+        primaryColor: "#667eea",
+        title: "Modo"
+    });
+});
+```
+
+### Configuration Options
+
+- **position**: `"left"` or `"right"` - Button position on screen
+- **theme**: `"light"` or `"dark"` - Chat interface theme
+- **primaryColor**: `"#hexcode"` - Primary color for UI elements
+- **title**: `"string"` - Chat header title
 
 ## Customization
 
@@ -127,15 +148,30 @@ For support and documentation:
 - Check the plugin settings page for connection testing
 - Review browser console for error messages
 
+## Quick Start
+
+1. **Install the plugin** and activate it
+2. **Go to Settings → Modo Chatbot**
+3. **Enable the chatbot** by checking the "Enable Chatbot" box
+4. **Enter your Chatbot Key** from your Modo dashboard
+5. **Set the JavaScript File Path** to:
+   ```
+   https://cdn.jsdelivr.net/gh/modochats/webcomponent@latest/cdn-dist/modo-web-component.min.js
+   ```
+6. **Customize** position, theme, and colors as needed
+7. **Save settings** and your chatbot will appear on your website!
+
 ## Changelog
 
 ### Version 1.0.0
 - Initial release
-- Basic chatbot integration
-- Admin configuration panel
-- Responsive design
-- Starter messages support
-- API integration
+- Modern JavaScript component integration
+- Admin configuration panel with live preview
+- Support for left/right positioning
+- Light/dark theme options
+- Custom primary color configuration
+- CDN integration for easy setup
+- Conflict prevention and error handling
 
 ## License
 

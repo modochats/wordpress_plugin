@@ -17,45 +17,73 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-// Define plugin constants
-define('MODO_CHATBOT_VERSION', '1.0.0');
-define('MODO_CHATBOT_PLUGIN_URL', plugin_dir_url(__FILE__));
-define('MODO_CHATBOT_PLUGIN_PATH', plugin_dir_path(__FILE__));
+// Define plugin constants (only if not already defined)
+if (!defined('MODO_CHATBOT_VERSION')) {
+    define('MODO_CHATBOT_VERSION', '1.0.0');
+}
+if (!defined('MODO_CHATBOT_PLUGIN_URL')) {
+    define('MODO_CHATBOT_PLUGIN_URL', plugin_dir_url(__FILE__));
+}
+if (!defined('MODO_CHATBOT_PLUGIN_PATH')) {
+    define('MODO_CHATBOT_PLUGIN_PATH', plugin_dir_path(__FILE__));
+}
 
+if (!class_exists('ModoChatbot')) {
 class ModoChatbot {
     
     public function __construct() {
-        add_action('init', array($this, 'init'));
-        add_action('admin_menu', array($this, 'add_admin_menu'));
-        add_action('admin_init', array($this, 'admin_init'));
-        add_action('wp_enqueue_scripts', array($this, 'enqueue_scripts'));
-        add_action('wp_footer', array($this, 'add_chatbot_widget'));
-        add_action('wp_ajax_modo_save_settings', array($this, 'save_settings'));
-        add_action('wp_ajax_modo_test_connection', array($this, 'test_connection'));
-        add_action('wp_ajax_modo_test_js_file', array($this, 'test_js_file'));
-        
-        // Plugin activation/deactivation hooks
-        register_activation_hook(__FILE__, array($this, 'activate'));
-        register_deactivation_hook(__FILE__, array($this, 'deactivate'));
-        
-        // Debug: Log plugin initialization
+        // Debug: Log constructor start
         if (defined('WP_DEBUG') && WP_DEBUG) {
-            error_log('Modo Chatbot Plugin: Initialized successfully');
+            error_log('Modo Chatbot Plugin: Constructor started');
+        }
+        
+        try {
+            // Start output buffering to prevent header issues
+            if (!headers_sent()) {
+                ob_start();
+            }
+            
+            add_action('init', array($this, 'init'));
+            add_action('admin_menu', array($this, 'add_admin_menu'));
+            add_action('admin_init', array($this, 'admin_init'));
+            add_action('wp_enqueue_scripts', array($this, 'enqueue_scripts'));
+            add_action('wp_footer', array($this, 'add_chatbot_widget'));
+            add_action('wp_ajax_modo_save_settings', array($this, 'save_settings'));
+            add_action('wp_ajax_modo_test_connection', array($this, 'test_connection'));
+            add_action('wp_ajax_modo_test_js_file', array($this, 'test_js_file'));
+            
+            // Plugin activation/deactivation hooks
+            register_activation_hook(__FILE__, array($this, 'activate'));
+            register_deactivation_hook(__FILE__, array($this, 'deactivate'));
+            
+            // Debug: Log plugin initialization
+            if (defined('WP_DEBUG') && WP_DEBUG) {
+                error_log('Modo Chatbot Plugin: Initialized successfully');
+            }
+        } catch (Exception $e) {
+            if (defined('WP_DEBUG') && WP_DEBUG) {
+                error_log('Modo Chatbot Plugin: Constructor error - ' . $e->getMessage());
+            }
         }
     }
     
     public function init() {
         load_plugin_textdomain('modo-chatbot', false, dirname(plugin_basename(__FILE__)) . '/languages');
+        
+        // Load RTL support for Persian
+        if (is_rtl()) {
+            add_action('wp_enqueue_scripts', array($this, 'enqueue_rtl_styles'));
+        }
     }
     
     public function activate() {
         // Set default options
         $default_options = array(
             'chatbot_key' => '',
-            'js_file_path' => '',
+            'js_file_path' => 'https://cdn.jsdelivr.net/gh/modochats/webcomponent@latest/cdn-dist/modo-web-component.min.js',
             'position' => 'right',
             'theme' => 'dark',
-            'button_color' => '#667eea',
+            'primary_color' => '#667eea',
             'title' => 'Modo',
             'enabled' => false
         );
@@ -109,11 +137,31 @@ class ModoChatbot {
         $output['js_file_path'] = esc_url_raw($input['js_file_path']);
         $output['position'] = in_array($input['position'], array('left', 'right')) ? $input['position'] : 'right';
         $output['theme'] = in_array($input['theme'], array('light', 'dark')) ? $input['theme'] : 'dark';
-        $output['button_color'] = sanitize_hex_color($input['button_color']);
+        $output['primary_color'] = sanitize_hex_color($input['primary_color']);
         $output['title'] = sanitize_text_field($input['title']);
         $output['enabled'] = isset($input['enabled']) ? (bool) $input['enabled'] : false;
         
         return $output;
+    }
+    
+    public function enqueue_rtl_styles() {
+        // Add RTL support for Persian language
+        wp_add_inline_style('wp-admin', '
+            .modo-admin-container {
+                direction: rtl;
+            }
+            .modo-admin-main {
+                text-align: right;
+            }
+            .form-table th {
+                text-align: right;
+            }
+            .modo-widget-preview,
+            .modo-help,
+            .modo-debug {
+                text-align: right;
+            }
+        ');
     }
     
     public function enqueue_scripts() {
@@ -165,15 +213,31 @@ class ModoChatbot {
     }
     
     private function get_widget_config_script($options) {
-        $config = array(
-            'chatBotKey' => $options['chatbot_key'],
-            'position' => $options['position'],
-            'theme' => $options['theme'],
-            'buttonColor' => $options['button_color'],
-            'title' => $options['title']
-        );
+        if (defined('WP_DEBUG') && WP_DEBUG) {
+            error_log('Modo Chatbot Plugin: Generating widget script with options: ' . print_r($options, true));
+        }
         
-        return 'window.modoConfig = ' . json_encode($config) . ';';
+        try {
+            $script = 'document.addEventListener("DOMContentLoaded", function() {';
+            $script .= 'const chat = new ModoChat("' . esc_js($options['chatbot_key']) . '", {';
+            $script .= 'position: "' . esc_js($options['position']) . '",';
+            $script .= 'theme: "' . esc_js($options['theme']) . '",';
+            $script .= 'primaryColor: "' . esc_js($options['primary_color']) . '",';
+            $script .= 'title: "' . esc_js($options['title']) . '"';
+            $script .= '});';
+            $script .= '});';
+            
+            if (defined('WP_DEBUG') && WP_DEBUG) {
+                error_log('Modo Chatbot Plugin: Generated script: ' . $script);
+            }
+            
+            return $script;
+        } catch (Exception $e) {
+            if (defined('WP_DEBUG') && WP_DEBUG) {
+                error_log('Modo Chatbot Plugin: Script generation error - ' . $e->getMessage());
+            }
+            return 'console.error("Modo Chatbot: Script generation failed");';
+        }
     }
     
     public function add_chatbot_widget() {
@@ -271,11 +335,11 @@ class ModoChatbot {
                             
                             <tr>
                                 <th scope="row">
-                                    <label for="button_color"><?php _e('Button Color', 'modo-chatbot'); ?></label>
+                                    <label for="primary_color"><?php _e('Primary Color', 'modo-chatbot'); ?></label>
                                 </th>
                                 <td>
-                                    <input type="color" id="button_color" name="modo_chatbot_options[button_color]" value="<?php echo esc_attr($options['button_color']); ?>" />
-                                    <p class="description"><?php _e('Custom color for the floating chat button.', 'modo-chatbot'); ?></p>
+                                    <input type="color" id="primary_color" name="modo_chatbot_options[primary_color]" value="<?php echo esc_attr($options['primary_color']); ?>" />
+                                    <p class="description"><?php _e('Primary color for the chat interface and floating button.', 'modo-chatbot'); ?></p>
                                 </td>
                             </tr>
                         </table>
@@ -425,7 +489,7 @@ class ModoChatbot {
             // Update preview when settings change
             function updatePreview() {
                 const position = $('#position').val();
-                const color = $('#button_color').val();
+                const color = $('#primary_color').val();
                 const $button = $('.preview-button');
                 
                 $button.css({
@@ -434,7 +498,7 @@ class ModoChatbot {
                 });
             }
             
-            $('#position, #button_color').on('change', updatePreview);
+            $('#position, #primary_color').on('change', updatePreview);
             updatePreview();
             
             // Test connection
@@ -603,7 +667,10 @@ class ModoChatbot {
             wp_send_json_error('JS file not accessible (HTTP ' . $status_code . ')');
         }
     }
-}
+} // End of ModoChatbot class
+} // End of if (!class_exists('ModoChatbot'))
 
 // Initialize the plugin
-new ModoChatbot();
+if (class_exists('ModoChatbot')) {
+    new ModoChatbot();
+}

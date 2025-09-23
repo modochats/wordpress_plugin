@@ -1,0 +1,220 @@
+# Persian (Iran) translation for Modo Chatbot
+# Copyright (C) 2024 Modo Chats
+# This file is distributed under the same license as the Modo Chatbot plugin.
+msgid ""
+msgstr ""
+"Project-Id-Version: Modo Chatbot 1.0.0\n"
+"Report-Msgid-Bugs-To: https://modochats.com\n"
+"POT-Creation-Date: 2024-01-01 00:00+0000\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2024-09-23 13:30+0000\n"
+"Last-Translator: Modo Chats <support@modochats.com>\n"
+"Language-Team: Persian <fa@li.org>\n"
+"Language: fa_IR\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: modo-chatbot-wp-plugin.php:45
+msgid "Modo Chatbot Settings"
+msgstr "تنظیمات چت‌بات مودو"
+
+#: modo-chatbot-wp-plugin.php:46
+msgid "Modo Chatbot"
+msgstr "چت‌بات مودو"
+
+#: modo-chatbot-wp-plugin.php:45
+msgid "Enable Chatbot"
+msgstr "فعال‌سازی چت‌بات"
+
+#: modo-chatbot-wp-plugin.php:46
+msgid "Enable or disable the chatbot widget on your website."
+msgstr "چت‌بات ویجت را در وب‌سایت خود فعال یا غیرفعال کنید."
+
+#: modo-chatbot-wp-plugin.php:52
+msgid "Chatbot Key"
+msgstr "کلید چت‌بات"
+
+#: modo-chatbot-wp-plugin.php:53
+msgid "Your unique chatbot identifier from Modo dashboard."
+msgstr "شناسه منحصر به فرد چت‌بات شما از داشبورد مودو."
+
+#: modo-chatbot-wp-plugin.php:54
+msgid "Test Connection"
+msgstr "تست اتصال"
+
+#: modo-chatbot-wp-plugin.php:60
+msgid "JavaScript File Path"
+msgstr "مسیر فایل جاوااسکریپت"
+
+#: modo-chatbot-wp-plugin.php:61
+msgid "URL to your Modo widget JavaScript file (e.g., https://yoursite.com/modo-widget.js)."
+msgstr "آدرس فایل جاوااسکریپت ویجت مودو شما (مثال: https://yoursite.com/modo-widget.js)."
+
+#: modo-chatbot-wp-plugin.php:62
+msgid "Test JS File"
+msgstr "تست فایل JS"
+
+#: modo-chatbot-wp-plugin.php:68
+msgid "Chatbot Title"
+msgstr "عنوان چت‌بات"
+
+#: modo-chatbot-wp-plugin.php:69
+msgid "Title displayed in the chat header."
+msgstr "عنوان نمایش داده شده در هدر چت."
+
+#: modo-chatbot-wp-plugin.php:75
+msgid "Button Position"
+msgstr "موقعیت دکمه"
+
+#: modo-chatbot-wp-plugin.php:76
+msgid "Position of the floating chat button."
+msgstr "موقعیت دکمه شناور چت."
+
+#: modo-chatbot-wp-plugin.php:77
+msgid "Right"
+msgstr "راست"
+
+#: modo-chatbot-wp-plugin.php:78
+msgid "Left"
+msgstr "چپ"
+
+#: modo-chatbot-wp-plugin.php:84
+msgid "Theme"
+msgstr "تم"
+
+#: modo-chatbot-wp-plugin.php:85
+msgid "Color theme for the chat interface."
+msgstr "تم رنگی برای رابط چت."
+
+#: modo-chatbot-wp-plugin.php:86
+msgid "Dark"
+msgstr "تیره"
+
+#: modo-chatbot-wp-plugin.php:87
+msgid "Light"
+msgstr "روشن"
+
+#: modo-chatbot-wp-plugin.php:93
+msgid "Primary Color"
+msgstr "رنگ اصلی"
+
+#: modo-chatbot-wp-plugin.php:94
+msgid "Primary color for the chat interface and floating button."
+msgstr "رنگ اصلی برای رابط چت و دکمه شناور."
+
+#: modo-chatbot-wp-plugin.php:101
+msgid "Preview"
+msgstr "پیش‌نمایش"
+
+#: modo-chatbot-wp-plugin.php:107
+msgid "Need Help?"
+msgstr "نیاز به کمک دارید؟"
+
+#: modo-chatbot-wp-plugin.php:108
+msgid "Get your Chatbot Key from your Modo dashboard."
+msgstr "کلید چت‌بات خود را از داشبورد مودو دریافت کنید."
+
+#: modo-chatbot-wp-plugin.php:109
+msgid "Visit Modo Dashboard"
+msgstr "بازدید از داشبورد مودو"
+
+#: modo-chatbot-wp-plugin.php:115
+msgid "Debug Information"
+msgstr "اطلاعات دیباگ"
+
+#: modo-chatbot-wp-plugin.php:116
+msgid "Plugin Status:"
+msgstr "وضعیت افزونه:"
+
+#: modo-chatbot-wp-plugin.php:117
+msgid "Enabled"
+msgstr "فعال"
+
+#: modo-chatbot-wp-plugin.php:118
+msgid "Disabled"
+msgstr "غیرفعال"
+
+#: modo-chatbot-wp-plugin.php:119
+msgid "Chatbot Key:"
+msgstr "کلید چت‌بات:"
+
+#: modo-chatbot-wp-plugin.php:120
+msgid "Set"
+msgstr "تنظیم شده"
+
+#: modo-chatbot-wp-plugin.php:121
+msgid "Not Set"
+msgstr "تنظیم نشده"
+
+#: modo-chatbot-wp-plugin.php:122
+msgid "JS File Path:"
+msgstr "مسیر فایل JS:"
+
+#: modo-chatbot-wp-plugin.php:123
+msgid "WordPress Version:"
+msgstr "نسخه وردپرس:"
+
+#: modo-chatbot-wp-plugin.php:124
+msgid "PHP Version:"
+msgstr "نسخه PHP:"
+
+#: modo-chatbot-wp-plugin.php:125
+msgid "Current Theme:"
+msgstr "تم فعلی:"
+
+#: modo-chatbot-wp-plugin.php:126
+msgid "Scripts Enqueued:"
+msgstr "اسکریپت‌های در صف:"
+
+#: modo-chatbot-wp-plugin.php:127
+msgid "Yes (will load on frontend)"
+msgstr "بله (در فرانت‌اند بارگذاری می‌شود)"
+
+#: modo-chatbot-wp-plugin.php:128
+msgid "No (check configuration above)"
+msgstr "خیر (تنظیمات بالا را بررسی کنید)"
+
+#: modo-chatbot-wp-plugin.php:129
+msgid "Refresh Debug Info"
+msgstr "تازه‌سازی اطلاعات دیباگ"
+
+#: modo-chatbot-wp-plugin.php:135
+msgid "Please enter a chatbot key"
+msgstr "لطفاً کلید چت‌بات را وارد کنید"
+
+#: modo-chatbot-wp-plugin.php:136
+msgid "Testing connection..."
+msgstr "در حال تست اتصال..."
+
+#: modo-chatbot-wp-plugin.php:137
+msgid "Connection successful"
+msgstr "اتصال موفق"
+
+#: modo-chatbot-wp-plugin.php:138
+msgid "Connection failed:"
+msgstr "اتصال ناموفق:"
+
+#: modo-chatbot-wp-plugin.php:139
+msgid "Connection failed"
+msgstr "اتصال ناموفق"
+
+#: modo-chatbot-wp-plugin.php:140
+msgid "Please enter a JS file path"
+msgstr "لطفاً مسیر فایل JS را وارد کنید"
+
+#: modo-chatbot-wp-plugin.php:141
+msgid "Testing JS file..."
+msgstr "در حال تست فایل JS..."
+
+#: modo-chatbot-wp-plugin.php:142
+msgid "JS file accessible"
+msgstr "فایل JS قابل دسترسی است"
+
+#: modo-chatbot-wp-plugin.php:143
+msgid "JS file not accessible:"
+msgstr "فایل JS قابل دسترسی نیست:"
+
+#: modo-chatbot-wp-plugin.php:144
+msgid "JS file test failed"
+msgstr "تست فایل JS ناموفق"

@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: Modo Chatbot
- * Plugin URI: https://modochats.com
+ * Plugin URI: https://github.com/modochats/wordpress_plugin
  * Description: Add Modo AI chatbot to your WordPress website with easy configuration and customization options.
  * Version: 1.0.0
  * Author: Modo Chats
@@ -32,10 +32,6 @@ if (!class_exists('ModoChatbot')) {
 class ModoChatbot {
     
     public function __construct() {
-        // Debug: Log constructor start
-        if (defined('WP_DEBUG') && WP_DEBUG) {
-            error_log('Modo Chatbot Plugin: Constructor started');
-        }
         
         try {
             // Start output buffering to prevent header issues
@@ -56,20 +52,12 @@ class ModoChatbot {
             register_activation_hook(__FILE__, array($this, 'activate'));
             register_deactivation_hook(__FILE__, array($this, 'deactivate'));
             
-            // Debug: Log plugin initialization
-            if (defined('WP_DEBUG') && WP_DEBUG) {
-                error_log('Modo Chatbot Plugin: Initialized successfully');
-            }
         } catch (Exception $e) {
-            if (defined('WP_DEBUG') && WP_DEBUG) {
-                error_log('Modo Chatbot Plugin: Constructor error - ' . $e->getMessage());
-            }
+            // Silent error handling
         }
     }
     
     public function init() {
-        load_plugin_textdomain('modo-chatbot', false, dirname(plugin_basename(__FILE__)) . '/languages');
-        
         // Load RTL support for Persian
         if (is_rtl()) {
             add_action('wp_enqueue_scripts', array($this, 'enqueue_rtl_styles'));
@@ -96,10 +84,6 @@ class ModoChatbot {
     }
     
     public function add_admin_menu() {
-        // Debug: Log admin menu creation
-        if (defined('WP_DEBUG') && WP_DEBUG) {
-            error_log('Modo Chatbot Plugin: Adding admin menu');
-        }
         
         add_options_page(
             __('Modo Chatbot Settings', 'modo-chatbot'),
@@ -120,10 +104,6 @@ class ModoChatbot {
             30
         );
         
-        // Debug: Log menu creation success
-        if (defined('WP_DEBUG') && WP_DEBUG) {
-            error_log('Modo Chatbot Plugin: Admin menu added successfully');
-        }
     }
     
     public function admin_init() {
@@ -132,6 +112,9 @@ class ModoChatbot {
     
     public function validate_options($input) {
         $output = array();
+        
+        // Unslash the input data
+        $input = wp_unslash($input);
         
         $output['chatbot_key'] = sanitize_text_field($input['chatbot_key']);
         $output['js_file_path'] = esc_url_raw($input['js_file_path']);
@@ -167,30 +150,16 @@ class ModoChatbot {
     public function enqueue_scripts() {
         $options = get_option('modo_chatbot_options');
         
-        // Debug: Log script enqueue attempt
-        if (defined('WP_DEBUG') && WP_DEBUG) {
-            error_log('Modo Chatbot Plugin: Attempting to enqueue scripts');
-            error_log('Modo Chatbot Plugin: Options: ' . print_r($options, true));
-        }
         
         if (!$options['enabled']) {
-            if (defined('WP_DEBUG') && WP_DEBUG) {
-                error_log('Modo Chatbot Plugin: Plugin is disabled');
-            }
             return;
         }
         
         if (empty($options['chatbot_key'])) {
-            if (defined('WP_DEBUG') && WP_DEBUG) {
-                error_log('Modo Chatbot Plugin: Chatbot key is empty');
-            }
             return;
         }
         
         if (empty($options['js_file_path'])) {
-            if (defined('WP_DEBUG') && WP_DEBUG) {
-                error_log('Modo Chatbot Plugin: JS file path is empty');
-            }
             return;
         }
         
@@ -206,16 +175,9 @@ class ModoChatbot {
         // Add inline script with configuration
         wp_add_inline_script('modo-widget', $this->get_widget_config_script($options), 'before');
         
-        // Debug: Log successful enqueue
-        if (defined('WP_DEBUG') && WP_DEBUG) {
-            error_log('Modo Chatbot Plugin: Scripts enqueued successfully');
-        }
     }
     
     private function get_widget_config_script($options) {
-        if (defined('WP_DEBUG') && WP_DEBUG) {
-            error_log('Modo Chatbot Plugin: Generating widget script with options: ' . print_r($options, true));
-        }
         
         try {
             $script = 'document.addEventListener("DOMContentLoaded", function() {';
@@ -227,15 +189,9 @@ class ModoChatbot {
             $script .= '});';
             $script .= '});';
             
-            if (defined('WP_DEBUG') && WP_DEBUG) {
-                error_log('Modo Chatbot Plugin: Generated script: ' . $script);
-            }
             
             return $script;
         } catch (Exception $e) {
-            if (defined('WP_DEBUG') && WP_DEBUG) {
-                error_log('Modo Chatbot Plugin: Script generation error - ' . $e->getMessage());
-            }
             return 'console.error("Modo Chatbot: Script generation failed");';
         }
     }
@@ -255,7 +211,7 @@ class ModoChatbot {
         $options = get_option('modo_chatbot_options');
         ?>
         <div class="wrap">
-            <h1><?php _e('Modo Chatbot Settings', 'modo-chatbot'); ?></h1>
+            <h1><?php esc_html_e('Modo Chatbot Settings', 'modo-chatbot'); ?></h1>
             
             <div class="modo-admin-container">
                 <div class="modo-admin-main">
@@ -265,81 +221,81 @@ class ModoChatbot {
                         <table class="form-table">
                             <tr>
                                 <th scope="row">
-                                    <label for="enabled"><?php _e('Enable Chatbot', 'modo-chatbot'); ?></label>
+                                    <label for="enabled"><?php esc_html_e('Enable Chatbot', 'modo-chatbot'); ?></label>
                                 </th>
                                 <td>
                                     <input type="checkbox" id="enabled" name="modo_chatbot_options[enabled]" value="1" <?php checked($options['enabled'], 1); ?> />
-                                    <p class="description"><?php _e('Enable or disable the chatbot widget on your website.', 'modo-chatbot'); ?></p>
+                                    <p class="description"><?php esc_html_e('Enable or disable the chatbot widget on your website.', 'modo-chatbot'); ?></p>
                                 </td>
                             </tr>
                             
                             <tr>
                                 <th scope="row">
-                                    <label for="chatbot_key"><?php _e('Chatbot Key', 'modo-chatbot'); ?> <span class="required">*</span></label>
+                                    <label for="chatbot_key"><?php esc_html_e('Chatbot Key', 'modo-chatbot'); ?> <span class="required">*</span></label>
                                 </th>
                                 <td>
                                     <input type="text" id="chatbot_key" name="modo_chatbot_options[chatbot_key]" value="<?php echo esc_attr($options['chatbot_key']); ?>" class="regular-text" required />
-                                    <p class="description"><?php _e('Your unique chatbot identifier from Modo dashboard.', 'modo-chatbot'); ?></p>
-                                    <button type="button" id="test-connection" class="button button-secondary"><?php _e('Test Connection', 'modo-chatbot'); ?></button>
+                                    <p class="description"><?php esc_html_e('Your unique chatbot identifier from Modo dashboard.', 'modo-chatbot'); ?></p>
+                                    <button type="button" id="test-connection" class="button button-secondary"><?php esc_html_e('Test Connection', 'modo-chatbot'); ?></button>
                                     <span id="connection-status"></span>
                                 </td>
                             </tr>
                             
                             <tr>
                                 <th scope="row">
-                                    <label for="js_file_path"><?php _e('JavaScript File Path', 'modo-chatbot'); ?> <span class="required">*</span></label>
+                                    <label for="js_file_path"><?php esc_html_e('JavaScript File Path', 'modo-chatbot'); ?> <span class="required">*</span></label>
                                 </th>
                                 <td>
                                     <input type="url" id="js_file_path" name="modo_chatbot_options[js_file_path]" value="<?php echo esc_attr($options['js_file_path']); ?>" class="regular-text" required />
-                                    <p class="description"><?php _e('URL to your Modo widget JavaScript file (e.g., https://yoursite.com/modo-widget.js).', 'modo-chatbot'); ?></p>
-                                    <button type="button" id="test-js-file" class="button button-secondary"><?php _e('Test JS File', 'modo-chatbot'); ?></button>
+                                    <p class="description"><?php esc_html_e('URL to your Modo widget JavaScript file (e.g., https://yoursite.com/modo-widget.js).', 'modo-chatbot'); ?></p>
+                                    <button type="button" id="test-js-file" class="button button-secondary"><?php esc_html_e('Test JS File', 'modo-chatbot'); ?></button>
                                     <span id="js-file-status"></span>
                                 </td>
                             </tr>
                             
                             <tr>
                                 <th scope="row">
-                                    <label for="title"><?php _e('Chatbot Title', 'modo-chatbot'); ?></label>
+                                    <label for="title"><?php esc_html_e('Chatbot Title', 'modo-chatbot'); ?></label>
                                 </th>
                                 <td>
                                     <input type="text" id="title" name="modo_chatbot_options[title]" value="<?php echo esc_attr($options['title']); ?>" class="regular-text" />
-                                    <p class="description"><?php _e('Title displayed in the chat header.', 'modo-chatbot'); ?></p>
+                                    <p class="description"><?php esc_html_e('Title displayed in the chat header.', 'modo-chatbot'); ?></p>
                                 </td>
                             </tr>
                             
                             <tr>
                                 <th scope="row">
-                                    <label for="position"><?php _e('Button Position', 'modo-chatbot'); ?></label>
+                                    <label for="position"><?php esc_html_e('Button Position', 'modo-chatbot'); ?></label>
                                 </th>
                                 <td>
                                     <select id="position" name="modo_chatbot_options[position]">
-                                        <option value="right" <?php selected($options['position'], 'right'); ?>><?php _e('Right', 'modo-chatbot'); ?></option>
-                                        <option value="left" <?php selected($options['position'], 'left'); ?>><?php _e('Left', 'modo-chatbot'); ?></option>
+                                        <option value="right" <?php selected($options['position'], 'right'); ?>><?php esc_html_e('Right', 'modo-chatbot'); ?></option>
+                                        <option value="left" <?php selected($options['position'], 'left'); ?>><?php esc_html_e('Left', 'modo-chatbot'); ?></option>
                                     </select>
-                                    <p class="description"><?php _e('Position of the floating chat button.', 'modo-chatbot'); ?></p>
+                                    <p class="description"><?php esc_html_e('Position of the floating chat button.', 'modo-chatbot'); ?></p>
                                 </td>
                             </tr>
                             
                             <tr>
                                 <th scope="row">
-                                    <label for="theme"><?php _e('Theme', 'modo-chatbot'); ?></label>
+                                    <label for="theme"><?php esc_html_e('Theme', 'modo-chatbot'); ?></label>
                                 </th>
                                 <td>
                                     <select id="theme" name="modo_chatbot_options[theme]">
-                                        <option value="dark" <?php selected($options['theme'], 'dark'); ?>><?php _e('Dark', 'modo-chatbot'); ?></option>
-                                        <option value="light" <?php selected($options['theme'], 'light'); ?>><?php _e('Light', 'modo-chatbot'); ?></option>
+                                        <option value="dark" <?php selected($options['theme'], 'dark'); ?>><?php esc_html_e('Dark', 'modo-chatbot'); ?></option>
+                                        <option value="light" <?php selected($options['theme'], 'light'); ?>><?php esc_html_e('Light', 'modo-chatbot'); ?></option>
                                     </select>
-                                    <p class="description"><?php _e('Color theme for the chat interface.', 'modo-chatbot'); ?></p>
+                                    <p class="description"><?php esc_html_e('Color theme for the chat interface.', 'modo-chatbot'); ?></p>
                                 </td>
                             </tr>
                             
                             <tr>
                                 <th scope="row">
-                                    <label for="primary_color"><?php _e('Primary Color', 'modo-chatbot'); ?></label>
+                                    <label for="primary_color"><?php esc_html_e('Primary Color', 'modo-chatbot'); ?></label>
                                 </th>
                                 <td>
                                     <input type="color" id="primary_color" name="modo_chatbot_options[primary_color]" value="<?php echo esc_attr($options['primary_color']); ?>" />
-                                    <p class="description"><?php _e('Primary color for the chat interface and floating button.', 'modo-chatbot'); ?></p>
+                                    <p class="description"><?php esc_html_e('Primary color for the chat interface and floating button.', 'modo-chatbot'); ?></p>
                                 </td>
                             </tr>
                         </table>
@@ -350,7 +306,7 @@ class ModoChatbot {
                 
                 <div class="modo-admin-sidebar">
                     <div class="modo-widget-preview">
-                        <h3><?php _e('Preview', 'modo-chatbot'); ?></h3>
+                        <h3><?php esc_html_e('Preview', 'modo-chatbot'); ?></h3>
                         <div id="preview-container">
                             <div class="preview-chatbot" id="preview-chatbot">
                                 <div class="preview-button"></div>
@@ -359,27 +315,27 @@ class ModoChatbot {
                     </div>
                     
                     <div class="modo-help">
-                        <h3><?php _e('Need Help?', 'modo-chatbot'); ?></h3>
-                        <p><?php _e('Get your Chatbot Key from your Modo dashboard.', 'modo-chatbot'); ?></p>
-                        <p><a href="https://modochats.com" target="_blank" class="button button-primary"><?php _e('Visit Modo Dashboard', 'modo-chatbot'); ?></a></p>
+                        <h3><?php esc_html_e('Need Help?', 'modo-chatbot'); ?></h3>
+                        <p><?php esc_html_e('Get your Chatbot Key from your Modo dashboard.', 'modo-chatbot'); ?></p>
+                        <p><a href="https://modochats.com" target="_blank" class="button button-primary"><?php esc_html_e('Visit Modo Dashboard', 'modo-chatbot'); ?></a></p>
                     </div>
                     
                     <div class="modo-debug">
-                        <h3><?php _e('Debug Information', 'modo-chatbot'); ?></h3>
+                        <h3><?php esc_html_e('Debug Information', 'modo-chatbot'); ?></h3>
                         <div class="debug-info">
-                            <p><strong><?php _e('Plugin Status:', 'modo-chatbot'); ?></strong> 
+                            <p><strong><?php esc_html_e('Plugin Status:', 'modo-chatbot'); ?></strong> 
                                 <?php echo $options['enabled'] ? '<span style="color: green;">✓ Enabled</span>' : '<span style="color: red;">✗ Disabled</span>'; ?>
                             </p>
-                            <p><strong><?php _e('Chatbot Key:', 'modo-chatbot'); ?></strong> 
+                            <p><strong><?php esc_html_e('Chatbot Key:', 'modo-chatbot'); ?></strong> 
                                 <?php echo !empty($options['chatbot_key']) ? '<span style="color: green;">✓ Set</span>' : '<span style="color: red;">✗ Not Set</span>'; ?>
                             </p>
-                            <p><strong><?php _e('JS File Path:', 'modo-chatbot'); ?></strong> 
+                            <p><strong><?php esc_html_e('JS File Path:', 'modo-chatbot'); ?></strong> 
                                 <?php echo !empty($options['js_file_path']) ? '<span style="color: green;">✓ Set</span>' : '<span style="color: red;">✗ Not Set</span>'; ?>
                             </p>
-                            <p><strong><?php _e('WordPress Version:', 'modo-chatbot'); ?></strong> <?php echo get_bloginfo('version'); ?></p>
-                            <p><strong><?php _e('PHP Version:', 'modo-chatbot'); ?></strong> <?php echo PHP_VERSION; ?></p>
-                            <p><strong><?php _e('Current Theme:', 'modo-chatbot'); ?></strong> <?php echo wp_get_theme()->get('Name'); ?></p>
-                            <p><strong><?php _e('Scripts Enqueued:', 'modo-chatbot'); ?></strong> 
+                            <p><strong><?php esc_html_e('WordPress Version:', 'modo-chatbot'); ?></strong> <?php echo esc_html(get_bloginfo('version')); ?></p>
+                            <p><strong><?php esc_html_e('PHP Version:', 'modo-chatbot'); ?></strong> <?php echo esc_html(PHP_VERSION); ?></p>
+                            <p><strong><?php esc_html_e('Current Theme:', 'modo-chatbot'); ?></strong> <?php echo esc_html(wp_get_theme()->get('Name')); ?></p>
+                            <p><strong><?php esc_html_e('Scripts Enqueued:', 'modo-chatbot'); ?></strong> 
                                 <?php 
                                 // Check if scripts would be enqueued based on current settings
                                 $would_enqueue = $options['enabled'] && !empty($options['chatbot_key']) && !empty($options['js_file_path']);
@@ -387,7 +343,7 @@ class ModoChatbot {
                                 ?>
                             </p>
                         </div>
-                        <button type="button" id="refresh-debug" class="button button-secondary"><?php _e('Refresh Debug Info', 'modo-chatbot'); ?></button>
+                        <button type="button" id="refresh-debug" class="button button-secondary"><?php esc_html_e('Refresh Debug Info', 'modo-chatbot'); ?></button>
                     </div>
                 </div>
             </div>
@@ -521,7 +477,7 @@ class ModoChatbot {
                     data: {
                         action: 'modo_test_connection',
                         chatbot_key: chatbotKey,
-                        nonce: '<?php echo wp_create_nonce('modo_test_connection'); ?>'
+                        nonce: '<?php echo esc_js(wp_create_nonce('modo_test_connection')); ?>'
                     },
                     success: function(response) {
                         if (response.success) {
@@ -559,7 +515,7 @@ class ModoChatbot {
                     data: {
                         action: 'modo_test_js_file',
                         js_file_path: jsFilePath,
-                        nonce: '<?php echo wp_create_nonce('modo_test_js_file'); ?>'
+                        nonce: '<?php echo esc_js(wp_create_nonce('modo_test_js_file')); ?>'
                     },
                     success: function(response) {
                         if (response.success) {
@@ -593,7 +549,7 @@ class ModoChatbot {
             wp_die('Unauthorized');
         }
         
-        $options = $this->validate_options($_POST['options']);
+        $options = $this->validate_options(isset($_POST['options']) ? $_POST['options'] : array());
         update_option('modo_chatbot_options', $options);
         
         wp_send_json_success('Settings saved successfully');
@@ -606,7 +562,7 @@ class ModoChatbot {
             wp_die('Unauthorized');
         }
         
-        $chatbot_key = sanitize_text_field($_POST['chatbot_key']);
+        $chatbot_key = sanitize_text_field(isset($_POST['chatbot_key']) ? wp_unslash($_POST['chatbot_key']) : '');
         
         if (empty($chatbot_key)) {
             wp_send_json_error('Chatbot key is required');
@@ -635,7 +591,7 @@ class ModoChatbot {
             wp_die('Unauthorized');
         }
         
-        $js_file_path = esc_url_raw($_POST['js_file_path']);
+        $js_file_path = esc_url_raw(isset($_POST['js_file_path']) ? wp_unslash($_POST['js_file_path']) : '');
         
         if (empty($js_file_path)) {
             wp_send_json_error('JS file path is required');

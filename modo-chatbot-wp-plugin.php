@@ -185,7 +185,8 @@ class ModoChatbot {
             $script .= 'position: "' . esc_js($options['position']) . '",';
             $script .= 'theme: "' . esc_js($options['theme']) . '",';
             $script .= 'primaryColor: "' . esc_js($options['primary_color']) . '",';
-            $script .= 'title: "' . esc_js($options['title']) . '"';
+            $script .= 'title: "' . esc_js($options['title']) . '",';
+            $script .= 'autoInit: true';
             $script .= '});';
             $script .= '});';
             
